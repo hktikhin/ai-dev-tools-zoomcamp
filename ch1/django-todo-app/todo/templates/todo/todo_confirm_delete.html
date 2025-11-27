@@ -1,0 +1,7 @@
+<!-- todo/templates/todo/todo_confirm_delete.html -->
+<h1>Delete "{{ object.title }}"?</h1>
+<form method="post">
+    {% csrf_token %}
+    <button type="submit">Yes, Delete</button>
+    <a href="{% url 'todo:list' %}">Cancel</a>
+</form>

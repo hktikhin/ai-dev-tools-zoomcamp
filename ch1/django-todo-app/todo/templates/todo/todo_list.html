@@ -1,0 +1,36 @@
+<!-- todo/templates/todo/todo_list.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My Todos</title>
+    <style>
+        .done { text-decoration: line-through; color: gray; }
+        .pending { font-weight: bold; }
+    </style>
+</head>
+<body>
+    <h1>My Todos</h1>
+    <a href="{% url 'todo:create' %}">+ Add New Todo</a>
+    <hr>
+    {% for todo in todos %}
+        <div style="margin: 15px 0; padding: 10px; border: 1px solid #ddd;">
+            <h3 class="{% if todo.status == 'done' %}done{% else %}pending{% endif %}">
+                {{ todo.title }}
+            </h3>
+            {% if todo.description %}<p>{{ todo.description }}</p>{% endif %}
+            {% if todo.due_date %}<small>Due: {{ todo.due_date|date:"M d, Y" }}</small>{% endif %}
+            <p>
+                <a href="{% url 'todo:update' todo.pk %}">Edit</a> |
+                <a href="{% url 'todo:delete' todo.pk %}">Delete</a> |
+                {% if todo.status == 'pending' %}
+                    <a href="{% url 'todo:mark_done' todo.pk %}">Mark as Done</a>
+                {% else %}
+                    <a href="{% url 'todo:mark_pending' todo.pk %}">Mark as Pending</a>
+                {% endif %}
+            </p>
+        </div>
+    {% empty %}
+        <p>No todos yet! <a href="{% url 'todo:create' %}">Create one</a></p>
+    {% endfor %}
+</body>
+</html>
