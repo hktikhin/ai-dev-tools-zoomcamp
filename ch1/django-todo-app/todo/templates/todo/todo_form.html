@@ -1,8 +1,31 @@
-<!-- todo/templates/todo/todo_form.html -->
-<h1>{% if form.instance.pk %}Edit{% else %}Create{% endif %} Todo</h1>
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Save</button>
-    <a href="{% url 'todo:list' %}">Cancel</a>
-</form>
+{% extends "base.html" %}
+{% block title %}{% if form.instance.pk %}Edit{% else %}New{% endif %} Todo{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-6">
+        <h1 class="mb-4">
+            {% if form.instance.pk %}
+                <i class="bi bi-pencil"></i> Edit Todo
+            {% else %}
+                <i class="bi bi-plus-circle"></i> New Todo
+            {% endif %}
+        </h1>
+
+        <div class="card">
+            <div class="card-body">
+                <form method="post">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+                        <button type="submit" class="btn btn-success me-md-2">
+                            Save
+                        </button>
+                        <a href="{% url 'home' %}" class="btn btn-secondary">Cancel</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

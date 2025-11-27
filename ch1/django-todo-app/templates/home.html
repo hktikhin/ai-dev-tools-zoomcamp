@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1 class="h2">
+                <i class="bi bi-list-check"></i> My Todos
+                <span class="badge bg-secondary fs-6">{{ todos.count }}</span>
+            </h1>
+            <a href="{% url 'todo:create' %}" class="btn btn-success btn-lg">
+                <i class="bi bi-plus-circle"></i> Add New Todo
+            </a>
+        </div>
+
+        {% if not todos %}
+            <div class="text-center py-5">
+                <i class="bi bi-inbox display-1 text-muted"></i>
+                <h3 class="mt-3 text-muted">No todos yet!</h3>
+                <a href="{% url 'todo:create' %}" class="btn btn-primary mt-3">Create your first todo</a>
+            </div>
+        {% else %}
+            {% for todo in todos %}
+                <div class="card mb-3 card-hover {% if todo.status == 'done' %}border-success{% else %}border-warning{% endif %}">
+                    <div class="card-body d-flex justify-content-between align-items-start">
+                        <div class="flex-grow-1">
+                            <h5 class="{% if todo.status == 'done' %}done text-success{% endif %}">
+                                {% if todo.status == 'done' %}
+                                    <i class="bi bi-check2-circle text-success"></i>
+                                {% else %}
+                                    <i class="bi bi-clock text-warning"></i>
+                                {% endif %}
+                                {{ todo.title }}
+                            </h5>
+                            {% if todo.description %}
+                                <p class="text-muted mb-2">{{ todo.description }}</p>
+                            {% endif %}
+                            {% if todo.due_date %}
+                                <small class="text-danger">
+                                    <i class="bi bi-calendar-event"></i>
+                                    Due: {{ todo.due_date|date:"M d, Y" }}
+                                </small>
+                            {% endif %}
+                        </div>
+
+                        <div class="ms-3 text-end">
+                            {% if todo.status == 'pending' %}
+                                <a href="{% url 'todo:mark_done' todo.pk %}" class="btn btn-sm btn-outline-success">
+                                    <i class="bi bi-check-lg"></i> Done
+                                </a>
+                            {% else %}
+                                <a href="{% url 'todo:mark_pending' todo.pk %}" class="btn btn-sm btn-outline-secondary">
+                                    <i class="bi bi-arrow-counterclockwise"></i>
+                                </a>
+                            {% endif %}
+
+                            <div class="btn-group mt-2" role="group">
+                                <a href="{% url 'todo:update' todo.pk %}" class="btn btn-sm btn-outline-primary">
+                                    <i class="bi bi-pencil"></i>
+                                </a>
+                                <a href="{% url 'todo:delete' todo.pk %}" class="btn btn-sm btn-outline-danger">
+                                    <i class="bi bi-trash"></i>
+                                </a>
+                            </V>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        {% endif %}
+
+    </div>
+</div>
+{% endblock %}

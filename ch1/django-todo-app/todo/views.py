@@ -11,7 +11,7 @@ from .models import Todo
 
 class TodoListView(ListView):
     model = Todo
-    template_name = 'todo/todo_list.html'
+    template_name = 'home.html'
     context_object_name = 'todos'
     ordering = ['-created_at']
 
